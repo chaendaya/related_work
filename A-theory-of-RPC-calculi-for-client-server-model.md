@@ -1,4 +1,12 @@
 # A-theory-of-RPC-calculi-for-client-server-model
+
+**A Theory of RPC Calculi for Client-Server Model** <br>
+Kwanghoon Choi, Byeong-Mo Chang <br>
+
+- https://arxiv.org/pdf/2110.15183
+
+<br>
+
 A Korean translation of the paper A Theory of RPC Calculi for the Client–Server Model.
 <br>
 <br>
