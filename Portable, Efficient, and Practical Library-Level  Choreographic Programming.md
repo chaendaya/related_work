@@ -1,6 +1,6 @@
 # Portable, Efficient, and Practical Library-Level  Choreographic Programming
 
-**Portable, Efficient, and Practical Library-Level  Choreographic Programming**
+**Portable, Efficient, and Practical Library-Level  Choreographic Programming** (2023)
 
 SHUN KASHIWA, GAN SHEN, SOROUSH ZARE, LINDSEY KUPER
 
