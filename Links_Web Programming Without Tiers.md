@@ -1,5 +1,13 @@
 # Links: Web Programming Without Tiers
 
+**Links: Web Programming Without Tiers** (2006)
+
+Ezra Cooper, Sam Lindley, Philip Wadler, and Jeremy Yallop
+
+- https://homepages.inf.ed.ac.uk/slindley/papers/links-fmco06.pdf
+
+<br>
+<br>
 
 ---
 ## Abstract
