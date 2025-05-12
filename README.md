@@ -34,4 +34,7 @@
 
 ### RPC
 
+[The RPC Calculus](<The RPC Calculus.md>)
+
+
 [A-theory-of-RPC-calculi-for-client-server-model](A-theory-of-RPC-calculi-for-client-server-model.md)
