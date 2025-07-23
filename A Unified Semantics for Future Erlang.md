@@ -42,8 +42,7 @@
 오히려 하나의 머신에서 여러 개의 노드가 실행될 수 있다는 점이다. 
 이러한 고수준의 분산 시스템 구조는 그림 1(Figure 1)에 나타나 있다.
 
-<img src="C:\Users\User\Desktop\화면 캡처 2025-07-23 145249.png" alt="화면 캡처 2025-07-23 145249" style="zoom:67%;" />
-
+<img width="567" height="412" alt="Image" src="https://github.com/user-attachments/assets/00c92147-43bd-4186-9f0c-f3ed5ae5b8fd" />
 
 
 #### 2.1 모든 것은 분산이다 (Everything is Distributed)
@@ -154,9 +153,9 @@ $$
 
 **프로세스 그룹**은 `pg ∈ ProcessGroup`로 표현되며 다음 셋 중 하나이다:
 
-- **빈 프로세스 그룹** : <img src="C:\Users\User\AppData\Roaming\Typora\typora-user-images\image-20250723154404111.png" alt="image-20250723154404111" style="zoom:25%;" />
+- **빈 프로세스 그룹** : <img width="18" height="23" alt="Image" src="https://github.com/user-attachments/assets/49b49030-4cbe-4eed-afec-6c941f2aca40" />
 - **단일 프로세스**
-- **두 프로세스 그룹의 결합** : <img src="C:\Users\User\AppData\Roaming\Typora\typora-user-images\image-20250723154323854.png" alt="image-20250723154323854" style="zoom: 25%;" />
+- **두 프로세스 그룹의 결합** : <img width="113" height="31" alt="Image" src="https://github.com/user-attachments/assets/e088e5d2-442a-452a-a59f-ac1c3741a6ac" />
 
 
 
@@ -192,7 +191,7 @@ $$
 
 - `Identifier`는 프로세스 식별자(`ProcessIdentifier`)와 노드 식별자(`NodeIdentifier`)의 합집합이며, 이를 `id ∈ Identifier`로 표현한다.
 - `signal`은 전달되는 신호를 의미한다.
-- `e`는 **빈 시퀀스(empty sequence)**를 의미하며, <img src="C:\Users\User\AppData\Roaming\Typora\typora-user-images\image-20250723155354413.png" alt="image-20250723155354413" style="zoom:25%;" />
+- `e`는 **빈 시퀀스(empty sequence)**를 의미하며, <img width="22" height="18" alt="Image" src="https://github.com/user-attachments/assets/ff9f07fd-ae36-4600-84f7-b489255d70fe" />
    `.`은 시퀀스의 **연결(concatenation)**,
    `\`는 **첫 번째로 일치하는 항목을 삭제**하는 연산이다.
 
@@ -225,9 +224,9 @@ $$
 
 노드 시스템(node system)은 `ns ∈ P Node`로 표현되며 다음 중 하나이다:
 
-- **빈 노드 시스템**: <img src="C:\Users\User\AppData\Roaming\Typora\typora-user-images\image-20250723154404111.png" alt="image-20250723154404111" style="zoom:25%;" />
+- **빈 노드 시스템**: <img width="18" height="23" alt="Image" src="https://github.com/user-attachments/assets/49b49030-4cbe-4eed-afec-6c941f2aca40" />
 - **단일 노드**
-- **두 노드 시스템의 결합**: <img src="C:\Users\User\AppData\Roaming\Typora\typora-user-images\image-20250723155752970.png" alt="image-20250723155752970" style="zoom:25%;" />
+- **두 노드 시스템의 결합**: <img width="98" height="23" alt="Image" src="https://github.com/user-attachments/assets/46d57e56-88c9-48de-934e-d0f73b70f536" />
 
 
 
@@ -241,7 +240,7 @@ $$
 - `ns`는 **노드 시스템(node system)**
 - `eth`는 **에테르(ether, 즉 시스템 메시지 큐)**
 
-직관적으로 보면, 프로세스들을 프로세스 그룹으로, 노드들을 노드 시스템으로 구성하는 것은 단순히 **프로세스(또는 노드)**의 **집합(set)**으로 생각할 수 있다. 우리는 의미론 정의에서 <img src="C:\Users\User\AppData\Roaming\Typora\typora-user-images\image-20250723161408230.png" alt="image-20250723161408230" style="zoom:25%;" /> (프로세스 그룹 병합 연산자)와 <img src="C:\Users\User\AppData\Roaming\Typora\typora-user-images\image-20250723161443802.png" alt="image-20250723161443802" style="zoom:25%;" /> (노드 시스템 병합 연산자)가 **결합법칙(associative)**과 **교환법칙(commutative)**을 만족하도록 조심스럽게 설계할 것이다.
+직관적으로 보면, 프로세스들을 프로세스 그룹으로, 노드들을 노드 시스템으로 구성하는 것은 단순히 **프로세스(또는 노드)**의 **집합(set)**으로 생각할 수 있다. 우리는 의미론 정의에서 <img width="26" height="32" alt="Image" src="https://github.com/user-attachments/assets/ef535832-cc43-4e06-b44f-6dd71e73bf41" /> (프로세스 그룹 병합 연산자)와 <img width="23" height="28" alt="Image" src="https://github.com/user-attachments/assets/fff7c16d-f358-49ea-a778-556706953855" /> (노드 시스템 병합 연산자)가 **결합법칙(associative)**과 **교환법칙(commutative)**을 만족하도록 조심스럽게 설계할 것이다.
 
 또한, 의미론 규칙을 간결하고 읽기 쉽게 유지하기 위해 **자주 반복되는 복잡한 표현**을 줄이기 위한 **보조 함수들(supportive functions)**을 정의한다.
 
