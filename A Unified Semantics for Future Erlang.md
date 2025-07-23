@@ -136,9 +136,9 @@ Q ! msg1, q_name ! msg2
 ##### Definition 1.
 
 **프로세스**는 `p ∈ Process`로 표현되며, 다음과 같은 삼중항(triplet)으로 구성된다:
-$$
+```math
 (e, \mathit{pid}, q)
-$$
+```
 여기서:
 
 - `e`는 현재 프로세스가 실행 중인 **표현식(expression)**
@@ -162,9 +162,9 @@ $$
 ##### Definition 3.
 
 **노드 컨트롤러(node controller)**는 `nc ∈ NodeController`로 표현되며 다음과 같은 삼중항이다:
-$$
+```math
 (lnks, mns, reg)
-$$
+```
 여기서:
 
 - `lnks`: **링크 집합**, 각 요소는 `(link_from, link_to)` 형태의 튜플
@@ -185,9 +185,9 @@ $$
 ##### Definition 4.
 
 **시스템 메시지 큐(system message queue)**, 즉 **ether**는 `eth ∈ SystemMessageQueue`로 표현되며, 다음과 같은 유한한 삼중항의 시퀀스로 구성된다:
-$$
+```math
 (id_{from}, id_{to}, signal)
-$$
+```
 
 - `Identifier`는 프로세스 식별자(`ProcessIdentifier`)와 노드 식별자(`NodeIdentifier`)의 합집합이며, 이를 `id ∈ Identifier`로 표현한다.
 - `signal`은 전달되는 신호를 의미한다.
@@ -207,9 +207,9 @@ eth \ (a1, b2, c1) = (a2, b1, c1).(a1, b2, c2).(a1, b2, c1)
 ##### Definition 5.
 
 **노드(node)**는 `n ∈ Node`로 표현되며, 다음과 같은 삼중항이다:
-$$
+```math
 [pg, nid, nc]
-$$
+```
 여기서:
 
 - `pg`는 해당 노드에서 실행 중인 **프로세스 그룹**
@@ -233,9 +233,9 @@ $$
 ##### Definition 7.
 
 시스템은 `s ∈ System`으로 표현되며, 다음과 같은 쌍(tuple)으로 구성된다:
-$$
+```math
 [[ns, eth]]
-$$
+```
 
 - `ns`는 **노드 시스템(node system)**
 - `eth`는 **에테르(ether, 즉 시스템 메시지 큐)**
@@ -313,19 +313,19 @@ ethMatch(eth, a1, b2) = c1
 
 프로세스 신호는 `sig ∈ Signal`로 범위가 정해지며, 다음과 같은 형식을 갖는다:
 
-- `message(v)`                     메시지 `v`를 전달하는 일반적인 메시지 전송
-- `link(pid)`                       프로세스 `pid`와 링크(link) 설정
+- `message(v)`                    메시지 `v`를 전달하는 일반적인 메시지 전송
+- `link(pid)`                     프로세스 `pid`와 링크(link) 설정
 - `unlink(pid)`                   프로세스 `pid`와 링크 해제
-- `monitor(pid, ref)`      프로세스 `pid`를 모니터링하며 참조 ID는 `ref`
-- `unmonitor(ref)`             모니터링을 중단 (참조 ID `ref`)
-- `monitor_node(nid)`       노드 `nid`를 모니터링
-- `unmonitor_node(ref)`   노드 모니터링 해제 (참조 ID `ref`)
-- `whereis(name)`                이름 `name`으로 등록된 프로세스 ID(pid)를 조회
-- `register(name, pid)`   이름 `name`에 프로세스 ID `pid`를 등록
-- `spawn(e, ref)`                표현식 `e`를 통해 프로세스를 생성하며 참조 ID는 `ref`
+- `monitor(pid, ref)`             프로세스 `pid`를 모니터링하며 참조 ID는 `ref`
+- `unmonitor(ref)`                모니터링을 중단 (참조 ID `ref`)
+- `monitor_node(nid)`             노드 `nid`를 모니터링
+- `unmonitor_node(ref)`           노드 모니터링 해제 (참조 ID `ref`)
+- `whereis(name)`                 이름 `name`으로 등록된 프로세스 ID(pid)를 조회
+- `register(name, pid)`           이름 `name`에 프로세스 ID `pid`를 등록
+- `spawn(e, ref)`                 표현식 `e`를 통해 프로세스를 생성하며 참조 ID는 `ref`
 - `spawn_node()`                  새로운 노드를 생성
-- `nsend(name, v)`              이름 `name`에 바인딩된 프로세스에 메시지 `v`를 전송 (named send)
-- `exit(v)`                            외부 종료(exit) 신호 전달
+- `nsend(name, v)`                이름 `name`에 바인딩된 프로세스에 메시지 `v`를 전송 (named send)
+- `exit(v)`                       외부 종료(exit) 신호 전달
 - `died(id, v)`                   프로세스나 노드의 종료를 알리는 신호 (id가 종료되었으며 값은 `v`)
 
 
