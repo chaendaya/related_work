@@ -330,7 +330,7 @@ $`\textbf{Definition 13.}\quad`$ **(Process Signal)** 프로세스 신호는 `si
 <br>
 <br>
 
-$`\textbf{Definition 13.}\quad`$ **(Process actions)** `α ∈ Action` 으로 표현되며,
+$`\textbf{Definition 14.}\quad`$ **(Process actions)** `α ∈ Action` 으로 표현되며,
 프로세스의 동작은 다음 중 하나이다:
 
 <img width="494" height="121" alt="Image" src="https://github.com/user-attachments/assets/b26904f5-6677-4b72-9b82-e97a23eba72a" />
@@ -353,9 +353,11 @@ $`\textbf{Definition 13.}\quad`$ **(Process actions)** `α ∈ Action` 으로 �
 <br>
 <br>
 
-$`\textbf{Definition 14.}\quad`$ **(Expression actions)**
+$`\textbf{Definition 15.}\quad`$ **(Expression actions)**
 
 표현식 동작은 `α ∈ exprAction`으로 정의되며 다음을 포함한다:
+
+<img width="506" height="149" alt="Image" src="https://github.com/user-attachments/assets/f0d11fec-a914-4e6a-8771-147195bf3771" />
 
 - $`τ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ `$ 계산 단계
 - $`pid \ \  !  \ \ v \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ `$ 프로세스 $`pid`$ 에 값 $`v`$ 를 전송
@@ -366,21 +368,21 @@ $`\textbf{Definition 14.}\quad`$ **(Expression actions)**
 
 직관적으로, $`f(v_1, ..., v_n) \rightsquigarrow v`$ 는 내장 함수 호출을 의미하며, 결과 값은 $`v`$ 이다.
 
+<br>
+<br>
 
+$`\textbf{Definition 16.}\quad`$ 
 
-##### Definition 16.
+함수 **mkAction(msgs)** 는 다음과 같이 정의된다:
 
-함수 `mkAction(msgs)`는 다음과 같이 정의된다:
-
-```
-mkAction(ε) = ε
-mkAction((to, from, sig).msgs) = to !_from sig ; mkAction(msgs)
-```
+$` mkAction(\epsilon) = \epsilon `$ <br>
+$` mkAction((to, from, sig) \cdot msgs) = to  \ \ !_{from} \ \ sig ; mkAction(msgs) `$
 
 즉, 메시지 큐를 처리하여 출력 동작들을 생성하는 함수이다.
 
+<br>
+<br>
 
+$`\textbf{Definition 17.}\quad`$ 
 
-##### Definition 17.
-
-시스템 전이 관계(system transition relation)는 **표 1 ~ 9**의 전이 규칙을 만족하는 **최소 관계**이다.
+**시스템 전이 관계(system transition relation)** 는 표 1 ~ 9의 전이 규칙을 만족하는 최소 관계이다.
