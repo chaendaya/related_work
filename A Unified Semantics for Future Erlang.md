@@ -47,21 +47,21 @@
 
 #### 2.1 모든 것은 분산이다 (Everything is Distributed)
 
-서론에서 언급했듯이, 멀티코어 아키텍처의 등장으로 인해 로컬과 원격의 경계는 더욱 모호해졌다. 따라서 새로운 의미론에서는 **자기 자신에게 보내는 메시지를 포함한 모든 메시지를 동일하게 처리**하며, **모든 메시지는 (가상적인) 시스템 메시지 큐(ether)를 통해 전달된다**.
+서론에서 언급했듯이, 멀티코어 아키텍처의 등장으로 인해 로컬과 원격의 경계는 더욱 모호해졌다. 따라서 새로운 의미론에서는 자기 자신에게 보내는 메시지를 포함한 모든 메시지를 동일하게 처리하며, **모든 메시지는 (가상적인) 시스템 메시지 큐(ether)를 통해 전달된다**.
 
 실제로 이는 **모든 메시지 전송이 두 단계로 구성됨을 의미**한다: 전송(sending)과 전달(delivery). 이로 인해 서로 다른 프로세스 간의 메시지들은 자유롭게 재정렬될 수 있다.
 
-또한 우리는, **새로운 프로세스 생성**, **링크 생성(linking)** 등과 같은 대부분의 **부수 효과(side effect) 연산을 비동기적으로 처리**하기로 결정했다. 이러한 다양한 부수 효과들이 시스템에 유사한 영향을 주는 점을 강조하기 위해, 우리는 이를 **노드 컨트롤러**라는 공통 구조를 통해 **일관되게 처리**한다. 이 노드 컨트롤러는 **노드 내의 관리 기능 전체를 담당**한다.
+또한 우리는, 새로운 프로세스 생성, 링크 생성(linking) 등과 같은 대부분의 **부수 효과(side effect) 연산을 비동기적으로 처리**하기로 결정했다. 이러한 다양한 부수 효과들이 시스템에 유사한 영향을 주는 점을 강조하기 위해, 우리는 이를 **노드 컨트롤러**라는 공통 구조를 통해 **일관되게 처리**한다. 이 노드 컨트롤러는 노드 내의 관리 기능 전체를 담당한다.
 
-예를 들어, 어떤 프로세스에 대해 이름을 등록하는 것은 **노드 컨트롤러에 신호를 보내는 방식**으로 수행된다. 어느 시점에 노드 컨트롤러는 이 신호를 수신하고, 해당 이름을 등록할 수 있는지를 결정한 후, 등록을 요청한 프로세스에 **응답을 보낸다**. 사용자 입장에서 이것이 다소 비실용적으로 보일 수는 있지만, `register` 신호를 보내고 응답을 기다리는 **고수준 함수**를 정의하는 것은 얼마든지 가능하다.
+예를 들어, 어떤 프로세스에 대해 이름을 등록하는 것은 **노드 컨트롤러에 신호를 보내는 방식**으로 수행된다. 어느 시점에 노드 컨트롤러는 이 신호를 수신하고, 해당 이름을 등록할 수 있는지를 결정한 후, 등록을 요청한 프로세스에 **응답을 보낸다**. 사용자 입장에서 이것이 다소 비실용적으로 보일 수는 있지만, `register` 신호를 보내고 응답을 기다리는 고수준 함수를 정의하는 것은 얼마든지 가능하다.
 
 
 
 #### 2.2 단방향 링크만 존재 (Uni-directional Links Only)
 
-새로운 의미론에서도 **링크(link)**와 **모니터(monitor)** 개념은 여전히 존재한다. 하지만 기존 의미론에 있었던 `trap_exit` 기능은 존재하지 않는다. 이는 곧, **링크된 프로세스 중 하나가 종료되면, 연결된 프로세스도 반드시 종료**된다는 의미이며, 어떤 조건이나 예외도 없다. (`trap_exit` 기능은 실제로는 `monitor`와 거의 동일한 역할을 하므로 제거되었다.)
+새로운 의미론에서도 링크(link)와 모니터(monitor) 개념은 여전히 존재한다. 하지만 기존 의미론에 있었던 `trap_exit` 기능은 존재하지 않는다. 이는 곧, 링크된 프로세스 중 하나가 종료되면, 연결된 프로세스도 반드시 종료된다는 의미이며, 어떤 조건이나 예외도 없다. (`trap_exit` 기능은 실제로는 `monitor`와 거의 동일한 역할을 하므로 제거되었다.)
 
-또한, 우리는 **링크와 모니터를 모두 단방향(unidirectional)으로 처리하기로 결정**했다. 즉, **프로세스 A가 프로세스 B를 링크(link)하거나 모니터(monitor)할 경우, A의 실패는 B에 아무 영향도 주지 않는다.**
+또한, 우리는 링크와 모니터를 모두 단방향(unidirectional)으로 처리하기로 결정했다. 즉, 프로세스 A가 프로세스 B를 링크(link)하거나 모니터(monitor)할 경우, A의 실패는 B에 아무 영향도 주지 않는다.
 
 다음은 단방향 링크와 모니터를 사용하여 supervisor 동작을 재구현하는 예제이다.
  자식 프로세스를 `{M, F, A}` 튜플로 정의하고, 자식이 종료되면 supervisor가 이를 감지하며, 반대로 supervisor가 비정상적으로 종료되면 자식도 종료되도록 구현하려면, 아래 코드 조각으로 충분하다:
@@ -79,7 +79,7 @@ MonitorRef = monitor(process, ChildPid),
 
 #### 2.3 내장된 프로세스 레지스트리 (A Built-in Registry)
 
-우리는 새로운 의미론에 **프로세스 레지스트리(process registry)**를 **포함시키는 것을 선택**했다. 이 선택이 논란의 여지가 있을 수는 있으나, **이름 있는 프로세스(named process)** 간의 통신은 Erlang에서 매우 핵심적인 개념이므로, 의미론 내에 포함할 가치가 있다고 판단했다.
+우리는 새로운 의미론에 프로세스 레지스트리(process registry)를 포함시키는 것을 선택했다. 이 선택이 논란의 여지가 있을 수는 있으나, 이름 있는 프로세스(named process) 간의 통신은 Erlang에서 매우 핵심적인 개념이므로, 의미론 내에 포함할 가치가 있다고 판단했다.
 
 기존 Erlang과 마찬가지로, 지원되는 기본 연산은 다음과 같다:
 
@@ -92,7 +92,7 @@ MonitorRef = monitor(process, ChildPid),
 - **원격 프로세스에 이름 등록**: `register(Name, Pid)`는 `Pid`가 원격 프로세스여도 실패하지 않음
 - **로컬 프로세스를 원격 노드에 이름 등록**: `register(Node, Name, Pid)`를 통해 가능
 
-이러한 설계의 결과로, `{atom, node} ! Msg` 문법을 사용해 메시지를 전송할 경우, **그 메시지를 수신해야 하는 프로세스가 실제로 그 노드에 있을 것이라는 보장이 없다**. 따라서 **다른 노드로 메시지를 중계(relay)** 해야 할 수도 있다.
+이러한 설계의 결과로, `{atom, node} ! Msg` 문법을 사용해 메시지를 전송할 경우, 그 메시지를 수신해야 하는 프로세스가 실제로 그 노드에 있을 것이라는 보장이 없다. 따라서 다른 노드로 메시지를 중계(relay) 해야 할 수도 있다.
 
 
 
@@ -105,7 +105,7 @@ MonitorRef = monitor(process, ChildPid),
 
 이러한 메시지 순서 보장은 Armstrong의 박사논문 [1]에서 설명된 바와 정확히 일치한다. 그러나 Svensson과 Fredlund [7]이 지적했듯이, 현재의 Erlang 구현에서는 이러한 보장이 제공되지 않는다. 특히 분산된 프로세스들 사이에서 통신이 이루어질 경우, 메시지가 손실될 수 있다.
 
-또한, 의미론 상 **다음과 같은 경우 메시지 순서에 대한 보장은 존재하지 않는다**:
+또한, 의미론 상 다음과 같은 경우 메시지 순서에 대한 보장은 존재하지 않는다:
 
 - **직접 주소 지정**(예: `Pid ! Msg`)과
 - **이름을 통한 간접 주소 지정**(예: `RegName ! Msg`)이 **동시에 사용된 경우**
@@ -122,7 +122,7 @@ Q ! msg1, q_name ! msg2
 
 
 
-
+------------------------------------------------------------------------------------------------------
 
 
 ### 3. 형식 의미론 (Formal Semantics)
@@ -131,48 +131,44 @@ Q ! msg1, q_name ! msg2
  이 스타일은 직관적이고 따라가기 쉬우며, 동시에 정확성에 대한 엄밀한 논의를 가능하게 할 정도로 충분히 상세하다.
  우리는 의미론 규칙을 제시하기에 앞서 필요한 정의들을 먼저 제시한다.
 
+<br>
 
-
-##### Definition 1.
-
-**프로세스**는 `p ∈ Process`로 표현되며, 다음과 같은 삼중항(triplet)으로 구성된다:
+$`\textbf{Definition 1.}`$ **프로세스**는 `p ∈ Process`로 표현되며, 다음과 같은 삼중항(triplet)으로 구성된다:
 ```math
-(e, \mathit{pid}, q)
+\langle e, \mathit{pid}, q \rangle
 ```
 여기서:
 
-- `e`는 현재 프로세스가 실행 중인 **표현식(expression)**
-- `pid`는 **프로세스 식별자(process identifier)**
-- `q`는 **메시지 큐(message queue)**
+- $`e`$ 는 현재 프로세스가 실행 중인 표현식(expression)
+- $`pid`$ 는 프로세스 식별자(process identifier)
+- $`q`$ 는 메시지 큐(message queue)
 
-이때 `e`는 일반적인 Erlang 표현식으로, [3]에서 정의된 표현식들과 유사하게 해석된다.
+이때 $`e`$는 일반적인 Erlang 표현식으로, [3]에서 정의된 표현식들과 유사하게 해석된다.
 
+<br>
+<br>
 
+$`\textbf{Definition 2.}`$ **프로세스 그룹**은 `pg ∈ ProcessGroup`로 표현되며 다음 셋 중 하나이다:
 
-##### Definition 2.
+- 빈 프로세스 그룹 : $`\emptyset`$
+- 단일 프로세스
+- 두 프로세스 그룹의 결합 : $`pg_1 \ \  \Vert_P \ \ pg_2`$
 
-**프로세스 그룹**은 `pg ∈ ProcessGroup`로 표현되며 다음 셋 중 하나이다:
+<br>
+<br>
 
-- **빈 프로세스 그룹** : <img width="18" height="23" alt="Image" src="https://github.com/user-attachments/assets/49b49030-4cbe-4eed-afec-6c941f2aca40" />
-- **단일 프로세스**
-- **두 프로세스 그룹의 결합** : <img width="113" height="31" alt="Image" src="https://github.com/user-attachments/assets/e088e5d2-442a-452a-a59f-ac1c3741a6ac" />
-
-
-
-##### Definition 3.
-
-**노드 컨트롤러(node controller)**는 `nc ∈ NodeController`로 표현되며 다음과 같은 삼중항이다:
+$`\textbf{Definition 3.}`$ **노드 컨트롤러(node controller)** 는 `nc ∈ NodeController`로 표현되며 다음과 같은 삼중항이다:
 ```math
-(lnks, mns, reg)
+\langle lnks, mns, reg \rangle
 ```
 여기서:
 
-- `lnks`: **링크 집합**, 각 요소는 `(link_from, link_to)` 형태의 튜플
-             `P(ProcessIdentier X ProcessIdentier)`
-- `mns`: **모니터 목록**, 각 요소는 `(mon_name, mon_from, mon_to)` 형태의 튜플
-           ` P(MonitorReference X ProcessIdentier X ProcessIdentier)`
-- `reg`: **등록된 이름의 집합**, 각 요소는 `(name, pid)` 형태의 튜플
-            `P(ProcessIdentier X ProcessName)`
+- $`lnks`$ : 링크 집합, 각 요소는 $`(link\_from, link\_to)`$ 형태의 튜플 <br>
+ $` \quad\quad\quad`$ $`\mathcal{P}`$(ProcessIdentier $`\times`$ ProcessIdentier)
+- $`mns`$ : 모니터 목록, 각 요소는 $`(mon\_name, mon\_from, mon\_to)`$ 형태의 튜플 <br>
+ $` \quad\quad\quad`$ $`\mathcal{P}`$(MonitorReference $`\times`$ ProcessIdentier $`\times`$ ProcessIdentier)
+- $`reg`$ : 등록된 이름의 집합, 각 요소는 $`(name, pid)`$ 형태의 튜플 <br>
+ $` \quad\quad\quad`$ $`\mathcal{P}`$(ProcessIdentier $`\times`$ ProcessName)
 
 즉, 노드 컨트롤러는 다음 세 가지 정보를 포함한다:
 
@@ -180,126 +176,135 @@ Q ! msg1, q_name ! msg2
 2. 모니터 설정 정보
 3. 프로세스 이름 등록 상태
 
+<br>
+<br>
 
 
-##### Definition 4.
-
-**시스템 메시지 큐(system message queue)**, 즉 **ether**는 `eth ∈ SystemMessageQueue`로 표현되며, 다음과 같은 유한한 삼중항의 시퀀스로 구성된다:
+$`\textbf{Definition 4.}`$ **시스템 메시지 큐(system message queue)**, <br> <br>
+즉 **ether**는 `eth ∈ SystemMessageQueue`로 표현되며, 다음과 같은 유한한 삼중항의 시퀀스로 구성된다:
 ```math
-(id_{from}, id_{to}, signal)
+\langle id_{from}, id_{to}, signal \rangle
 ```
+<br>
 
-- `Identifier`는 프로세스 식별자(`ProcessIdentifier`)와 노드 식별자(`NodeIdentifier`)의 합집합이며, 이를 `id ∈ Identifier`로 표현한다.
-- `signal`은 전달되는 신호를 의미한다.
-- `e`는 **빈 시퀀스(empty sequence)**를 의미하며, <img width="22" height="18" alt="Image" src="https://github.com/user-attachments/assets/ff9f07fd-ae36-4600-84f7-b489255d70fe" />
-   `.`은 시퀀스의 **연결(concatenation)**,
-   `\`는 **첫 번째로 일치하는 항목을 삭제**하는 연산이다.
+- $`Identifier`$ 는 프로세스 식별자(ProcessIdentifier)와 노드 식별자(NodeIdentifier)의 합집합이며, 이를 `id ∈ Identifier`로 표현한다.
+- $`signal`$ 은 전달되는 신호를 의미한다.
+- $`\emptyset`$는 빈 시퀀스(empty sequence)를 의미하며,
+   $`.`$은 시퀀스의 연결(concatenation),
+   $`\setminus`$는 첫 번째로 일치하는 항목을 삭제하는 연산이다.
 
 예시
 
-```eth = (a2, b1, c1).(a1, b2, c1).(a1, b2, c2).(a1, b2, c1)
-eth = (a2, b1, c1).(a1, b2, c1).(a1, b2, c2).(a1, b2, c1)
-eth \ (a1, b2, c1) = (a2, b1, c1).(a1, b2, c2).(a1, b2, c1)
+```math
+eth = (a2, b1, c1) \cdot (a1, b2, c1) \cdot (a1, b2, c2) \cdot (a1, b2, c1)
+```
+```math
+eth \setminus (a1, b2, c1) = (a2, b1, c1) \cdot (a1, b2, c2) \cdot (a1, b2, c1)
 ```
 
+<br>
+<br>
+<br>
 
-
-##### Definition 5.
-
-**노드(node)**는 `n ∈ Node`로 표현되며, 다음과 같은 삼중항이다:
+$`\textbf{Definition 5.}`$ **노드(node)** 는 `n ∈ Node`로 표현되며, 다음과 같은 삼중항이다:
 ```math
 [pg, nid, nc]
 ```
 여기서:
 
-- `pg`는 해당 노드에서 실행 중인 **프로세스 그룹**
-- `nid`는 노드의 **고유 식별자(node identifier)**
-- `nc`는 **노드 컨트롤러**
+- $`pg`$는 해당 노드에서 실행 중인 프로세스 그룹
+- $`nid`$는 노드의 고유 식별자(node identifier)
+- $`nc`$는 노드 컨트롤러
 
 즉, 하나의 노드는 프로세스 그룹, 노드 ID, 노드 컨트롤러 세 가지로 구성된다.
 
+<br>
+<br>
 
+$`\textbf{Definition 6.}`$ **노드 시스템(node system)** 은 `ns ∈ P Node`로 표현되며 다음 중 하나이다:
 
-##### Definition 6.
+- 빈 노드 시스템: $`\emptyset`$
+- 단일 노드
+- 두 노드 시스템의 결합:  $`ns_1 \ \  \Vert_N \ \ ns_2`$
 
-노드 시스템(node system)은 `ns ∈ P Node`로 표현되며 다음 중 하나이다:
+<br>
+<br>
 
-- **빈 노드 시스템**: <img width="18" height="23" alt="Image" src="https://github.com/user-attachments/assets/49b49030-4cbe-4eed-afec-6c941f2aca40" />
-- **단일 노드**
-- **두 노드 시스템의 결합**: <img width="98" height="23" alt="Image" src="https://github.com/user-attachments/assets/46d57e56-88c9-48de-934e-d0f73b70f536" />
-
-
-
-##### Definition 7.
-
-시스템은 `s ∈ System`으로 표현되며, 다음과 같은 쌍(tuple)으로 구성된다:
+$`\textbf{Definition 7.}`$ **시스템** 은 `s ∈ System`으로 표현되며, 다음과 같은 쌍(tuple)으로 구성된다:
 ```math
-[[ns, eth]]
+[[ ns, eth ]]
 ```
 
-- `ns`는 **노드 시스템(node system)**
-- `eth`는 **에테르(ether, 즉 시스템 메시지 큐)**
+- $`ns`$ 는 노드 시스템(node system)
+- $`eth`$ 는 에테르(ether, 즉 시스템 메시지 큐)
 
-직관적으로 보면, 프로세스들을 프로세스 그룹으로, 노드들을 노드 시스템으로 구성하는 것은 단순히 **프로세스(또는 노드)**의 **집합(set)**으로 생각할 수 있다. 우리는 의미론 정의에서 <img width="26" height="32" alt="Image" src="https://github.com/user-attachments/assets/ef535832-cc43-4e06-b44f-6dd71e73bf41" /> (프로세스 그룹 병합 연산자)와 <img width="23" height="28" alt="Image" src="https://github.com/user-attachments/assets/fff7c16d-f358-49ea-a778-556706953855" /> (노드 시스템 병합 연산자)가 **결합법칙(associative)**과 **교환법칙(commutative)**을 만족하도록 조심스럽게 설계할 것이다.
+직관적으로 보면, 프로세스들을 프로세스 그룹으로, 노드들을 노드 시스템으로 구성하는 것은 단순히 프로세스(또는 노드)의 집합(set)으로 생각할 수 있다. <br>
+우리는 의미론 정의에서 $`pg_1 \ \  \Vert_P \ \ pg_2`$ (프로세스 그룹 병합 연산자)와 $`ns_1 \ \  \Vert_N \ \ ns_2`$ (노드 시스템 병합 연산자)가 결합법칙(associative)과 교환법칙(commutative)을 만족하도록 조심스럽게 설계할 것이다.
 
-또한, 의미론 규칙을 간결하고 읽기 쉽게 유지하기 위해 **자주 반복되는 복잡한 표현**을 줄이기 위한 **보조 함수들(supportive functions)**을 정의한다.
+<br>
+<br>
 
-
-
-##### Definition 8.
-
-함수 `isNid(i)`는, 어떤 식별자 `i ∈ Identifier`가 **노드 식별자**인 경우에는 `true`를, **프로세스 식별자**인 경우에는 `false`를 반환한다.
+또한, 의미론 규칙을 간결하고 읽기 쉽게 유지하기 위해 자주 반복되는 복잡한 표현을 줄이기 위한 보조 함수들(supportive functions)을 정의한다.
 
 
+$`\textbf{Definition 8.}`$
 
-##### Definition 9.
+함수 **isNid(i)** 는, 어떤 식별자 `i ∈ Identifier`가 노드 식별자인 경우에는 true를, 프로세스 식별자인 경우에는 false를 반환한다.
 
-함수 `node(p)`는, 프로세스 식별자 `p ∈ ProcessIdentifier`에 대해, 그 프로세스가 속한 **노드 식별자(node identifier)**를 반환한다.
+<br>
+<br>
 
+$`\textbf{Definition 9.}`$
 
+함수 **node(p)** 는, 프로세스 식별자 `p ∈ ProcessIdentifier`에 대해, 그 프로세스가 속한 노드 식별자(node identifier)를 반환한다.
 
-##### Definition 10.
+<br>
+<br>
 
-함수 `destNid(sig)`는 어떤 **신호(signal)** `sig`에 관련된 **원격 노드의 식별자**를 반환한다. 일부 신호에 대해서는 **정의되지 않을 수도 있음(undefined)**에 주의하십시오.
+$`\textbf{Definition 10.}`$
+
+함수 **destNid(sig)** 는 어떤 신호(signal) $`sig`$에 관련된 원격 노드의 식별자를 반환한다. <br>
+일부 신호에 대해서는 정의되지 않을 수도 있음(undefined)에 주의하십시오.
 
 예시:
 
-- `destNid(link(pid))` → `node(pid)`
-- `destNid(spawn(e, ref))` → `undefined`
+- $`\textit{destNid(link}(pid)) \rightarrow \textit{node}(pid)`$
+- $`\textit{destNid(spawn}(e, ref)) → undefined`$
 
+<br>
+<br>
 
+$`\textbf{Definition 11.}`$
 
-##### Definition 11.
-
-함수 `ethMatch(eth, to, from)`는 **시스템 메시지 큐(eth)**에서, **보낸 주체(from)**가 **수신자(to)**에게 보낸 **첫 번째 메시지**를 반환한다.
+함수 **ethMatch(eth, to, from)** 는 시스템 메시지 큐(eth)에서, 보낸 주체(from)가 수신자(to)에게 보낸 첫 번째 메시지를 반환한다.
 
 예시:
-
+```math
+eth = (a2, b1, c1) \cdot (a1, b2, c1) \cdot (a1, b2, c2) \cdot (a1, b2, c1)
 ```
-eth = (a2, b1, c1).(a1, b2, c1).(a1, b2, c2).(a1, b2, c1)
+```math
 ethMatch(eth, a1, b2) = c1
 ```
 
+<br>
+<br>
 
+$`\textbf{Definition 12.}`$
 
-##### Definition 12.
+- 함수 $`pids(pg)`$는 프로세스 그룹 $`pg`$ 내의 모든 프로세스 식별자(pid)들의 집합을 반환한다.
+- 함수 $`nids(ns)`$는 노드 시스템 $`ns`$ 내의 모든 노드 식별자(nid)들의 집합을 반환한다.
 
-- 함수 `pids(pg)`는 프로세스 그룹 `pg` 내의 **모든 프로세스 식별자(pid)**들의 집합을 반환한다.
-- 함수 `nids(ns)`는 노드 시스템 `ns` 내의 **모든 노드 식별자(nid)**들의 집합을 반환한다.
+또한 다음 조건을 만족할 때 프로세스 그룹 또는 시스템을 "정상적(well-formed)"이라고 한다:
 
-또한 다음 조건을 만족할 때 프로세스 그룹 또는 시스템을 **"정상적(well-formed)"**이라고 한다:
+- 각 프로세스 식별자는 하나의 프로세스에만 속함
+- 각 노드 식별자는 하나의 노드에만 속함
+- 하나의 식별자는 오직 노드 식별자이거나 프로세스 식별자 중 하나이어야 함
 
-- 각 **프로세스 식별자**는 **하나의 프로세스에만 속함**
-- 각 **노드 식별자**는 **하나의 노드에만 속함**
-- 하나의 식별자는 오직 **노드 식별자이거나 프로세스 식별자 중 하나**이어야 함
+이후의 의미론에서는 모든 Erlang 노드 시스템이 정상적(well-formed)이고, 포함된 프로세스 그룹 역시 정상적인 구조를 갖는다고 가정한다.
 
+의미론에서 **신호(signal)** 는 송신자 프로세스와 수신자 프로세스(또는 노드 컨트롤러) 간에 전달되는 정보 항목이다.
 
-
-이후의 의미론에서는 모든 Erlang 노드 시스템이 **정상적(well-formed)**이고, 포함된 프로세스 그룹 역시 **정상적인 구조**를 갖는다고 가정한다.
-
-의미론에서 **신호(signal)**는 **송신자 프로세스**와 **수신자 프로세스(또는 노드 컨트롤러)** 간에 전달되는 **정보 항목**이다.
-
-**프로세스의 동작(process action)**은 다음 중 하나이다:
+프로세스의 동작(process action)은 다음 중 하나이다:
 
 - 침묵 동작(silent action)
 - 입력 동작(input action)
@@ -307,6 +312,8 @@ ethMatch(eth, a1, b2) = c1
 - 노드 종료(node termination)
 - 노드 연결 해제(node disconnect)
 
+<br>
+<br>
 
 
 ##### Definition 13. (Process signals)
