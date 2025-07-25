@@ -133,7 +133,7 @@ Q ! msg1, q_name ! msg2
 
 <br>
 
-$`\textbf{Definition 1.}`$ **프로세스**는 `p ∈ Process`로 표현되며, 다음과 같은 삼중항(triplet)으로 구성된다:
+$`\textbf{Definition 1.}\quad`$ **프로세스**는 `p ∈ Process`로 표현되며, 다음과 같은 삼중항(triplet)으로 구성된다:
 ```math
 \langle e, \mathit{pid}, q \rangle
 ```
@@ -148,7 +148,7 @@ $`\textbf{Definition 1.}`$ **프로세스**는 `p ∈ Process`로 표현되며, 
 <br>
 <br>
 
-$`\textbf{Definition 2.}`$ **프로세스 그룹**은 `pg ∈ ProcessGroup`로 표현되며 다음 셋 중 하나이다:
+$`\textbf{Definition 2.}\quad`$ **프로세스 그룹**은 `pg ∈ ProcessGroup`로 표현되며 다음 셋 중 하나이다:
 
 - 빈 프로세스 그룹 : $`\emptyset`$
 - 단일 프로세스
@@ -157,7 +157,7 @@ $`\textbf{Definition 2.}`$ **프로세스 그룹**은 `pg ∈ ProcessGroup`로 �
 <br>
 <br>
 
-$`\textbf{Definition 3.}`$ **노드 컨트롤러(node controller)** 는 `nc ∈ NodeController`로 표현되며 다음과 같은 삼중항이다:
+$`\textbf{Definition 3.}\quad`$ **노드 컨트롤러(node controller)** 는 `nc ∈ NodeController`로 표현되며 다음과 같은 삼중항이다:
 ```math
 \langle lnks, mns, reg \rangle
 ```
@@ -180,7 +180,7 @@ $`\textbf{Definition 3.}`$ **노드 컨트롤러(node controller)** 는 `nc ∈ 
 <br>
 
 
-$`\textbf{Definition 4.}`$ **시스템 메시지 큐(system message queue)**, <br> <br>
+$`\textbf{Definition 4.}\quad`$ **시스템 메시지 큐(system message queue)**, <br> <br>
 즉 **ether**는 `eth ∈ SystemMessageQueue`로 표현되며, 다음과 같은 유한한 삼중항의 시퀀스로 구성된다:
 ```math
 \langle id_{from}, id_{to}, signal \rangle
@@ -206,7 +206,7 @@ eth \setminus (a1, b2, c1) = (a2, b1, c1) \cdot (a1, b2, c2) \cdot (a1, b2, c1)
 <br>
 <br>
 
-$`\textbf{Definition 5.}`$ **노드(node)** 는 `n ∈ Node`로 표현되며, 다음과 같은 삼중항이다:
+$`\textbf{Definition 5.}\quad`$ **노드(node)** 는 `n ∈ Node`로 표현되며, 다음과 같은 삼중항이다:
 ```math
 [pg, nid, nc]
 ```
@@ -221,7 +221,7 @@ $`\textbf{Definition 5.}`$ **노드(node)** 는 `n ∈ Node`로 표현되며, �
 <br>
 <br>
 
-$`\textbf{Definition 6.}`$ **노드 시스템(node system)** 은 `ns ∈ P Node`로 표현되며 다음 중 하나이다:
+$`\textbf{Definition 6.}\quad`$ **노드 시스템(node system)** 은 `ns ∈ P Node`로 표현되며 다음 중 하나이다:
 
 - 빈 노드 시스템: $`\emptyset`$
 - 단일 노드
@@ -230,7 +230,7 @@ $`\textbf{Definition 6.}`$ **노드 시스템(node system)** 은 `ns ∈ P Node`
 <br>
 <br>
 
-$`\textbf{Definition 7.}`$ **시스템** 은 `s ∈ System`으로 표현되며, 다음과 같은 쌍(tuple)으로 구성된다:
+$`\textbf{Definition 7.}\quad`$ **시스템** 은 `s ∈ System`으로 표현되며, 다음과 같은 쌍(tuple)으로 구성된다:
 ```math
 [[ ns, eth ]]
 ```
@@ -247,21 +247,21 @@ $`\textbf{Definition 7.}`$ **시스템** 은 `s ∈ System`으로 표현되며, 
 또한, 의미론 규칙을 간결하고 읽기 쉽게 유지하기 위해 자주 반복되는 복잡한 표현을 줄이기 위한 보조 함수들(supportive functions)을 정의한다.
 
 
-$`\textbf{Definition 8.}`$
+$`\textbf{Definition 8.}\quad`$
 
 함수 **isNid(i)** 는, 어떤 식별자 `i ∈ Identifier`가 노드 식별자인 경우에는 true를, 프로세스 식별자인 경우에는 false를 반환한다.
 
 <br>
 <br>
 
-$`\textbf{Definition 9.}`$
+$`\textbf{Definition 9.}\quad`$
 
 함수 **node(p)** 는, 프로세스 식별자 `p ∈ ProcessIdentifier`에 대해, 그 프로세스가 속한 노드 식별자(node identifier)를 반환한다.
 
 <br>
 <br>
 
-$`\textbf{Definition 10.}`$
+$`\textbf{Definition 10.}\quad`$
 
 함수 **destNid(sig)** 는 어떤 신호(signal) $`sig`$에 관련된 원격 노드의 식별자를 반환한다. <br>
 일부 신호에 대해서는 정의되지 않을 수도 있음(undefined)에 주의하십시오.
@@ -274,7 +274,7 @@ $`\textbf{Definition 10.}`$
 <br>
 <br>
 
-$`\textbf{Definition 11.}`$
+$`\textbf{Definition 11.}\quad`$
 
 함수 **ethMatch(eth, to, from)** 는 시스템 메시지 큐(eth)에서, 보낸 주체(from)가 수신자(to)에게 보낸 첫 번째 메시지를 반환한다.
 
@@ -289,7 +289,7 @@ ethMatch(eth, a1, b2) = c1
 <br>
 <br>
 
-$`\textbf{Definition 12.}`$
+$`\textbf{Definition 12.}\quad`$
 
 - 함수 $`pids(pg)`$는 프로세스 그룹 $`pg`$ 내의 모든 프로세스 식별자(pid)들의 집합을 반환한다.
 - 함수 $`nids(ns)`$는 노드 시스템 $`ns`$ 내의 모든 노드 식별자(nid)들의 집합을 반환한다.
@@ -302,71 +302,69 @@ $`\textbf{Definition 12.}`$
 
 이후의 의미론에서는 모든 Erlang 노드 시스템이 정상적(well-formed)이고, 포함된 프로세스 그룹 역시 정상적인 구조를 갖는다고 가정한다.
 
+<br>
+<br>
+
+$`\textbf{Definition 13.}\quad`$ **(Process Signal)** 프로세스 신호는 `sig ∈ Signal`로 범위가 정해지며, 다음과 같은 형식을 갖는다:
+
+<img width="548" height="330" alt="Image" src="https://github.com/user-attachments/assets/999304a3-4810-4694-a655-ac072b3639e5" />
+
+
+- 메시지 $`v`$ 를 전달하는 일반적인 메시지 전송
+- 프로세스 $`pid`$ 와 링크(link) 설정
+- 프로세스 $`pid`$ 와 링크 해제
+- 프로세스 $`pid`$ 를 모니터링하며 참조 ID는 $`ref`$
+- 모니터링을 중단 (참조 ID $`ref`$)
+- 노드 $`nid`$ 를 모니터링
+- 노드 모니터링 해제 (참조 ID $`ref`$)
+- 이름 $`name`$ 으로 등록된 프로세스 ID(pid)를 조회
+- 이름 $`name`$ 에 프로세스 ID $`pid`$ 를 등록
+- 표현식 $`e`$ 를 통해 프로세스를 생성하며 참조 ID는 $`ref`$
+- 새로운 노드를 생성
+- 이름 $`name`$ 에 바인딩된 프로세스에 메시지 $`v`$ 를 전송 (named send)
+- 외부 종료(exit) 신호 전달
+- 프로세스나 노드의 종료를 알리는 신호 (id가 종료되었으며 값은 $`v`$)
+
 의미론에서 **신호(signal)** 는 송신자 프로세스와 수신자 프로세스(또는 노드 컨트롤러) 간에 전달되는 정보 항목이다.
 
-프로세스의 동작(process action)은 다음 중 하나이다:
+<br>
+<br>
 
-- 침묵 동작(silent action)
-- 입력 동작(input action)
-- 출력 동작(output action
-- 노드 종료(node termination)
-- 노드 연결 해제(node disconnect)
+$`\textbf{Definition 13.}\quad`$ **(Process actions)** `α ∈ Action` 으로 표현되며,
+프로세스의 동작은 다음 중 하나이다:
+
+<img width="494" height="121" alt="Image" src="https://github.com/user-attachments/assets/b26904f5-6677-4b72-9b82-e97a23eba72a" />
+
+- $`τ`$  내부 계산 (silent action)
+- $`pid \ \ !_{from} \ \ sig`$  프로세스 $`pid`$ 에게 $`from`$ 으로부터 $`sig`$ 신호를 보냄 (출력 동작)
+- $`pid \ \ ?_{from} \ \ sig`$  프로세스 $`pid`$ 가 $`from`$ 으로부터 $`sig`$ 신호를 수신 (입력 동작)
+- $`die(nid)`$  노드 $`nid`$ 의 종료
+- $`disconnect(nid_1, nid_2)`$  노드 $`nid_1`$ 와 $`nid_2`$ 간 연결 해제
 
 <br>
 <br>
 
 
-##### Definition 13. (Process signals)
+다음으로, 우리는 Erlang 시스템의 가능한 계산 단계들을 형식적으로 정의한다.
 
-프로세스 신호는 `sig ∈ Signal`로 범위가 정해지며, 다음과 같은 형식을 갖는다:
+이 정의에서는 표현식에 대한 전이 규칙 집합이 존재한다고 가정한다. 이 집합은 P(Expression × exprAction × Expression)의 부분집합이다. <br>
+참조 [3]에 존재한다. 완전성을 위해 아래에 표현식 동작의 정의를 반복한다:
 
-- `message(v)`                    메시지 `v`를 전달하는 일반적인 메시지 전송
-- `link(pid)`                     프로세스 `pid`와 링크(link) 설정
-- `unlink(pid)`                   프로세스 `pid`와 링크 해제
-- `monitor(pid, ref)`             프로세스 `pid`를 모니터링하며 참조 ID는 `ref`
-- `unmonitor(ref)`                모니터링을 중단 (참조 ID `ref`)
-- `monitor_node(nid)`             노드 `nid`를 모니터링
-- `unmonitor_node(ref)`           노드 모니터링 해제 (참조 ID `ref`)
-- `whereis(name)`                 이름 `name`으로 등록된 프로세스 ID(pid)를 조회
-- `register(name, pid)`           이름 `name`에 프로세스 ID `pid`를 등록
-- `spawn(e, ref)`                 표현식 `e`를 통해 프로세스를 생성하며 참조 ID는 `ref`
-- `spawn_node()`                  새로운 노드를 생성
-- `nsend(name, v)`                이름 `name`에 바인딩된 프로세스에 메시지 `v`를 전송 (named send)
-- `exit(v)`                       외부 종료(exit) 신호 전달
-- `died(id, v)`                   프로세스나 노드의 종료를 알리는 신호 (id가 종료되었으며 값은 `v`)
+<br>
+<br>
 
-
-
-##### Definition 14. (Process actions)
-
-프로세스 동작은 `α ∈ Action`으로 정의되며, 다음을 포함한다:
-
-- `τ`  내부 계산 (silent action)
-- `pid !_from sig`  프로세스 `pid`에게 `from`으로부터 `sig` 신호를 보냄 (출력 동작)
-- `pid ?_from sig`  프로세스 `pid`가 `from`으로부터 `sig` 신호를 수신 (입력 동작)
-- `die(nid)`  노드 `nid`의 종료
-- `disconnect(nid₁, nid₂)`  노드 `nid₁`와 `nid₂` 간 연결 해제
-
-
-
-**다음으로, 우리는 Erlang 시스템의 가능한 계산 단계들을 형식적으로 정의한다.**
-
-이 정의에서는 표현식에 대한 전이 규칙 집합이 존재한다고 가정한다. 이 집합은 `P(Expression × exprAction × Expression)`의 부분집합이다. 참조 [3]에 존재한다. 완전성을 위해 아래에 표현식 동작의 정의를 반복한다:
-
-
-
-##### Definition 15. (Expression actions)
+$`\textbf{Definition 14.}\quad`$ **(Expression actions)**
 
 표현식 동작은 `α ∈ exprAction`으로 정의되며 다음을 포함한다:
 
-- `τ`  계산 단계
-- `pid ! v`  프로세스 `pid`에 값 `v`를 전송
-- `exiting(v)`  예외 발생 또는 종료
-- `read(q, v)`   큐 `q`에서 값 `v`를 읽음
-- `test(q)`   큐 `q`의 내용을 검사
-- `f(v₁, ..., vₙ) ~> v`   내장 함수 `f`를 인자 `v₁, ..., vₙ`으로 호출하여 결과 `v`를 얻음
+- $`τ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ `$ 계산 단계
+- $`pid \ \  !  \ \ v \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ `$ 프로세스 $`pid`$ 에 값 $`v`$ 를 전송
+- $`exiting(v) \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ `$ 예외 발생 또는 종료
+- $`read(q, v) \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ `$ 큐 $`q`$ 에서 값 $`v`$ 를 읽음
+- $`test(q) \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ `$ 큐 $`q`$ 의 내용을 검사
+- $`f(v_1, ..., v_n) \leadsto v \ \ \ `$   내장 함수 $`f`$ 를 인자 $`v_1, ..., v_n`$ 으로 호출하여 결과 $`v`$ 를 얻음
 
-직관적으로, `f(v₁, ..., vₙ) ~> v`는 내장 함수 호출을 의미하며, 결과 값은 `v`이다.
+직관적으로, $`f(v_1, ..., v_n) \rightsquigarrow v`$ 는 내장 함수 호출을 의미하며, 결과 값은 $`v`$ 이다.
 
 
 
