@@ -165,9 +165,9 @@ $`\textbf{Definition 3.}\quad`$ **노드 컨트롤러(node controller)** 는 `nc
 ```
 여기서:
 
-- $`lnks`$ : 링크 집합, 각 요소는 $`(link\_from, link\_to)`$ 형태의 튜플 $` \qquad\qquad\qquad\quad\quad`$ $`\mathcal{P}`$(ProcessIdentier $`\times`$ ProcessIdentier)
-- $`mns`$ : 모니터 목록, 각 요소는 $`(mon\_name, mon\_from, mon\_to)`$ 형태의 튜플 $` \quad\quad`$ $`\mathcal{P}`$(MonitorReference $`\times`$ ProcessIdentier $`\times`$ ProcessIdentier)
-- $`reg`$ : 등록된 이름의 집합, 각 요소는 $`(name, pid)`$ 형태의 튜플 $` \qquad\qquad\qquad\quad\quad`$ $`\mathcal{P}`$(ProcessIdentier $`\times`$ ProcessName)
+- $`lnks`$ : 링크 집합, 각 요소는 $`(link\_from, link\_to)`$ 형태의 튜플 : $`\mathcal{P}`$(ProcessIdentier $`\times`$ ProcessIdentier)
+- $`mns`$ : 모니터 목록, 각 요소는 $`(mon\_name, mon\_from, mon\_to)`$ 형태의 튜플 : $`\mathcal{P}`$(MonitorReference $`\times`$ ProcessIdentier $`\times`$ ProcessIdentier)
+- $`reg`$ : 등록된 이름의 집합, 각 요소는 $`(name, pid)`$ 형태의 튜플 : $`\mathcal{P}`$(ProcessIdentier $`\times`$ ProcessName)
 
 즉, 노드 컨트롤러는 다음 세 가지 정보를 포함한다:
 
@@ -360,7 +360,9 @@ $`\textbf{Definition 17.}\quad`$ **시스템 전이 관계(system transition rel
 
 <br>
 
-**프로세스 문맥에서의 표현식 평가** Table 1은 프로세스에 국한된 로컬 표현식 평가를 포함한다. 이 모든 동작들은 더 큰 문맥(즉, 시스템 전체) 안에서 일어나지만, 이 규칙들이 프로세스 외부의 어떤 것에도 의존하지 않기 때문에, 그 문맥은 규칙 내에서 드러나지 않는다. (이러한 규칙들은 Table 5에 정의된 internal-rule에 의해 시스템 수준으로 확장된다.)
+**프로세스 문맥에서의 표현식 평가** 
+
+Table 1은 프로세스에 국한된 로컬 표현식 평가를 포함한다. 이 모든 동작들은 더 큰 문맥(즉, 시스템 전체) 안에서 일어나지만, 이 규칙들이 프로세스 외부의 어떤 것에도 의존하지 않기 때문에, 그 문맥은 규칙 내에서 드러나지 않는다. (이러한 규칙들은 Table 5에 정의된 internal-rule에 의해 시스템 수준으로 확장된다.)
 
 <img width="408" height="297" alt="Image" src="https://github.com/user-attachments/assets/62bfbf66-5f67-4d2a-b40e-927fb110963a" />
 
@@ -378,23 +380,29 @@ read 규칙에서는, 프로세스의 메일박스(큐)가 $` q1 \cdot v \cdot q
 
 
 <img width="448" height="137" alt="image" src="https://github.com/user-attachments/assets/2504ec09-ecbb-483c-b245-3ae217f3a305" />
+
+<br>
 <br>
 <br>
 
-**Side effect를 일으키는 (노드 컨트롤러 관련) 표현식 평가** Table 2는 사이드 이펙트를 발생시키는 동작들에 대한 규칙을 포함한다. 이러한 동작들 중 다수는 노드 컨트롤러의 개입이 필요하다. side eff 규칙은 일반적인(generic) 형태의 규칙으로서 다음과 같은 액션들을 포함한다: send, exit, link, unlink, monitor, unmonitor, spawn, register, whereis, monitor_node, unmonitor_node.
+**Side effect를 일으키는 (노드 컨트롤러 관련) 표현식 평가** 
 
+Table 2는 사이드 이펙트를 발생시키는 동작들에 대한 규칙을 포함한다. 이러한 동작들 중 다수는 노드 컨트롤러의 개입이 필요하다. side eff 규칙은 일반적인(generic) 형태의 규칙으로서 다음과 같은 액션들을 포함한다: send, exit, link, unlink, monitor, unmonitor, spawn, register, whereis, monitor_node, unmonitor_node.
 이 테이블의 모든 규칙은 **비동기적(asynchronous)** 이다. 예를 들어 whereis()는 즉시 ok 응답을 반환하지만, "진짜" 결과(예: whereis나 unlink의 경우)는 **나중에 일반 수신 가능한 신호(signal)** 로 도착한다. 이러한 연산들의 비동기적 성격 때문에, 그 의미론 규칙들은 겉보기에는 단순하게 보인다. Table 7에서는 이러한 규칙들에 대해 노드 컨트롤러 측에서 처리되는 부분을 제시하고 있으며, 섹션 5에서는 노드 컨트롤러의 더 복잡한 내부 작동 방식을 설명한다. 
 
 <img width="888" height="253" alt="image" src="https://github.com/user-attachments/assets/bda023bf-f150-4acd-b6ae-b839427fdd9a" />
 <br>
 <br>
-
 side eff 규칙은 적절한 signal을 구성하기 위해 변환 함수 mkSig를 사용하는데, 이 함수는 Table 3에 정의되어 있다.
 <img width="469" height="206" alt="image" src="https://github.com/user-attachments/assets/c524e392-9498-4581-ba9f-1d10835c27ba" />
+
+<br>
 <br>
 <br>
 
-**노드 문맥에서의 표현식 평가** Table 4에는 시스템 문맥에서 node()를 평가하는 간단한 규칙이 포함되어 있다. 이 함수는 즉시 결과를 반환하며(즉, 비동기적이지 않다), 결과가 노드 문맥에 의존하기 때문에 Table 1의 규칙들과는 분리되어 있다.
+**노드 문맥에서의 표현식 평가** 
+
+Table 4에는 시스템 문맥에서 node()를 평가하는 간단한 규칙이 포함되어 있다. 이 함수는 즉시 결과를 반환하며(즉, 비동기적이지 않다), 결과가 노드 문맥에 의존하기 때문에 Table 1의 규칙들과는 분리되어 있다.
 
 <img width="828" height="338" alt="image" src="https://github.com/user-attachments/assets/593a7a51-ea8e-40bf-a624-e6bb431c494a" />
 <br>
@@ -402,12 +410,15 @@ side eff 규칙은 적절한 signal을 구성하기 위해 변환 함수 mkSig�
 
 종료 및 종료 처리 규칙 또한 시스템 수준에서 평가된다. 종료된 프로세스들은 Table 4에서 볼 수 있듯이 시스템에서 제거된다. Table 4의 마지막 규칙은 새로운 노드를 생성하는 다소 특이한 동작을 다룬다. 이 동작은 의미론 내에서 보기 드문 예외이며, 일반적인 side eff 규칙에 포함시키는 것이 자연스러워 보일 수 있다. 하지만 이 동작의 결과가 전체 노드의 생성이기 때문에 일반적인 패턴에 적합하지 않다. 더욱 일반화된 패턴으로 만들기엔 매력적이지 않았기 때문에, 이 규칙은 별도로 이곳에 명시되어 있다. 이 규칙은 새로운 노드를 생성하며, 새로운 노드 식별자를 갖도록 보장한다.
 
+<br>
+<br>
 
-**노드 수준의 입력 및 출력 규칙** Table 5와 Table 6에는 입력 및 출력 규칙이 담겨 있다.
+**노드 수준의 입력 및 출력 규칙** 
+
+Table 5와 Table 6에는 입력 및 출력 규칙이 담겨 있다.
 <img width="896" height="668" alt="image" src="https://github.com/user-attachments/assets/239ed479-0bca-4fa2-b181-ac655c81d9e4" />
 <br>
 <br>
-
 출력 규칙(Table 5)은 메시지를 시스템 메시지 큐(ether)에 전달하는 반면, internal 규칙은 단순히 출력이 아닌 표현식 평가를 시스템 수준으로 올려주는 역할을 한다(위에서 논의한 바와 같다).
 
 입력 규칙(Table 6)에 대해 주목할 점은, 이 규칙들이 송신자와 수신자 쌍에 대해 임의의 순서로 적용될 수 있다는 것이다. 이는 서로 다른 송신자 및 수신자 간의 메시지가 재정렬될 수 있음을 의미한다. 하지만 동시에 다음과 같은 문제가 발생한다: 어떤 특정한 (송신자, 수신자) 쌍이 영원히 고려되지 않을 수 있다는 것이다. 이는 어떤 메시지의 전달이 영원히 지연될 수도 있다는 뜻이다. 이러한 공정하지 않은(non-fair) 상황에서는 많은 속성들을 증명할 수 없게 된다. 이 문제를 다루기 위해, 우리는 이후 섹션 5에서 공정성(fairness) 규칙을 명시해야 한다.
@@ -416,9 +427,11 @@ side eff 규칙은 적절한 signal을 구성하기 위해 변환 함수 mkSig�
 
 exit-rule은 프로세스가 외부 요인에 의해 비정상적으로 종료되는 경우를 처리한다. 종료 사유는 링크된 프로세스의 종료이거나 명시적인 exit() 호출일 수 있다. 수신 프로세스는 종료되며, 이 사실은 결국 노드 컨트롤러에게 통지된다. 이 메시지 전달 메커니즘은 완전히 비동기적(asynchronous) 이다. 자기 자신에게 보내는 메시지조차도 시스템 메시지 큐를 통해 전달된다. 마지막으로, 노드 컨트롤러에게 보내는 메시지는 Table 7에서 다룬다.
 
-
+<br>
+<br>
 
 **노드 컨트롤러 (메타)규칙** 
+
 표 7에는 노드 컨트롤러를 위한 메타 규칙들이 포함되어 있다.
 이 규칙들은 노드 컨트롤러 신호가 어떻게 처리되는지를 설명한다.
 
