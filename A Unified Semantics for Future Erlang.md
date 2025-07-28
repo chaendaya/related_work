@@ -353,3 +353,94 @@ $` mkAction((to, from, sig) \cdot msgs) = to  \ \ !_{from} \ \ sig ; mkAction(ms
 <br>
 
 $`\textbf{Definition 17.}\quad`$ **시스템 전이 관계(system transition relation)** 는 표 1 ~ 9의 전이 규칙을 만족하는 최소 관계이다.
+
+<br>
+
+어떤 규칙들은 원하는 효과를 얻기 위해 함께 결합되어야 한다는 점을 지적할 필요가 있다. 가장 명확한 예는 아마도 출력 관련 규칙들일 것이다. 이 경우, 메시지는 Table 2의 부수 효과(side eff) 규칙에서 전송되고, Table 5의 출력(output) 규칙에서 전달된다. 대부분의 의미론 규칙들은 자명하지만, 우리는 아래에서 각 테이블을 살펴보며 몇 가지 미묘한 점들을 지적하고, 보다 복잡한 규칙들을 설명하고자 한다.
+
+<br>
+
+**프로세스 문맥에서의 표현식 평가** Table 1은 프로세스에 국한된 로컬 표현식 평가를 포함한다. 이 모든 동작들은 더 큰 문맥(즉, 시스템 전체) 안에서 일어나지만, 이 규칙들이 프로세스 외부의 어떤 것에도 의존하지 않기 때문에, 그 문맥은 규칙 내에서 드러나지 않는다. (이러한 규칙들은 Table 5에 정의된 internal-rule에 의해 시스템 수준으로 확장된다.)
+
+<img width="408" height="297" alt="Image" src="https://github.com/user-attachments/assets/62bfbf66-5f67-4d2a-b40e-927fb110963a" />
+
+<img width="557" height="63" alt="image" src="https://github.com/user-attachments/assets/ce026a04-32c9-4e14-818c-55a6d23982e0" />
+
+<br>
+<br>
+
+규칙 silent에서는, 표현식 $`e`$ 가 $`e \stackrel{\tau}{\rightarrow} e' `$ 라는 전이(즉, 일반적인 계산 단계)를 가질 경우, 프로세스(그리고 더 크게는 시스템 전체) $`\langle e, pid, q \rangle`$ 는 $`\tau`$ 로 라벨링된 전이를 통해 $` \langle e', pid, q \rangle `$ 로 전이할 수 있다.
+
+read 규칙에서는, 프로세스의 메일박스(큐)가 $` q1 \cdot v \cdot q2 `$ 라는 세 부분으로 나눌 수 있을 때, $` \langle e, \ \ pid, \ \ q1 \cdot v \cdot q2 \rangle `$ 에서 $`\langle e', \ \ pid, \ \ q1 \cdot q2 \rangle`$로 전이하는 것이 가능하다. 
+이때 표현식 수준에서 $` receive: \ \  e \stackrel{read(q1, v)}{\longrightarrow} e' `$라는 전이가 유도 가능해야 한다. (정확한 receive 규칙 정의는 [3]을 참조하라.)
+
+따라서 read와 receive 규칙은 함께 receive 구문의 직관적인 의미론을 보장한다. 부수 효과(side effect)를 유발하는 동작은 Table 2에 있는 규칙들에 의해 처리된다.
+
+
+<img width="448" height="137" alt="image" src="https://github.com/user-attachments/assets/2504ec09-ecbb-483c-b245-3ae217f3a305" />
+<br>
+<br>
+
+**Side effect를 일으키는 (노드 컨트롤러 관련) 표현식 평가** Table 2는 사이드 이펙트를 발생시키는 동작들에 대한 규칙을 포함한다. 이러한 동작들 중 다수는 노드 컨트롤러의 개입이 필요하다. side eff 규칙은 일반적인(generic) 형태의 규칙으로서 다음과 같은 액션들을 포함한다: send, exit, link, unlink, monitor, unmonitor, spawn, register, whereis, monitor_node, unmonitor_node.
+
+이 테이블의 모든 규칙은 **비동기적(asynchronous)** 이다. 예를 들어 whereis()는 즉시 ok 응답을 반환하지만, "진짜" 결과(예: whereis나 unlink의 경우)는 **나중에 일반 수신 가능한 신호(signal)** 로 도착한다. 이러한 연산들의 비동기적 성격 때문에, 그 의미론 규칙들은 겉보기에는 단순하게 보인다. Table 7에서는 이러한 규칙들에 대해 노드 컨트롤러 측에서 처리되는 부분을 제시하고 있으며, 섹션 5에서는 노드 컨트롤러의 더 복잡한 내부 작동 방식을 설명한다. 
+
+<img width="888" height="253" alt="image" src="https://github.com/user-attachments/assets/bda023bf-f150-4acd-b6ae-b839427fdd9a" />
+<br>
+<br>
+
+side eff 규칙은 적절한 signal을 구성하기 위해 변환 함수 mkSig를 사용하는데, 이 함수는 Table 3에 정의되어 있다.
+<img width="469" height="206" alt="image" src="https://github.com/user-attachments/assets/c524e392-9498-4581-ba9f-1d10835c27ba" />
+<br>
+<br>
+
+**노드 문맥에서의 표현식 평가** Table 4에는 시스템 문맥에서 node()를 평가하는 간단한 규칙이 포함되어 있다. 이 함수는 즉시 결과를 반환하며(즉, 비동기적이지 않다), 결과가 노드 문맥에 의존하기 때문에 Table 1의 규칙들과는 분리되어 있다.
+
+<img width="828" height="338" alt="image" src="https://github.com/user-attachments/assets/593a7a51-ea8e-40bf-a624-e6bb431c494a" />
+<br>
+<br>
+
+종료 및 종료 처리 규칙 또한 시스템 수준에서 평가된다. 종료된 프로세스들은 Table 4에서 볼 수 있듯이 시스템에서 제거된다. Table 4의 마지막 규칙은 새로운 노드를 생성하는 다소 특이한 동작을 다룬다. 이 동작은 의미론 내에서 보기 드문 예외이며, 일반적인 side eff 규칙에 포함시키는 것이 자연스러워 보일 수 있다. 하지만 이 동작의 결과가 전체 노드의 생성이기 때문에 일반적인 패턴에 적합하지 않다. 더욱 일반화된 패턴으로 만들기엔 매력적이지 않았기 때문에, 이 규칙은 별도로 이곳에 명시되어 있다. 이 규칙은 새로운 노드를 생성하며, 새로운 노드 식별자를 갖도록 보장한다.
+
+
+**노드 수준의 입력 및 출력 규칙** Table 5와 Table 6에는 입력 및 출력 규칙이 담겨 있다.
+<img width="896" height="668" alt="image" src="https://github.com/user-attachments/assets/239ed479-0bca-4fa2-b181-ac655c81d9e4" />
+<br>
+<br>
+
+출력 규칙(Table 5)은 메시지를 시스템 메시지 큐(ether)에 전달하는 반면, internal 규칙은 단순히 출력이 아닌 표현식 평가를 시스템 수준으로 올려주는 역할을 한다(위에서 논의한 바와 같다).
+
+입력 규칙(Table 6)에 대해 주목할 점은, 이 규칙들이 송신자와 수신자 쌍에 대해 임의의 순서로 적용될 수 있다는 것이다. 이는 서로 다른 송신자 및 수신자 간의 메시지가 재정렬될 수 있음을 의미한다. 하지만 동시에 다음과 같은 문제가 발생한다: 어떤 특정한 (송신자, 수신자) 쌍이 영원히 고려되지 않을 수 있다는 것이다. 이는 어떤 메시지의 전달이 영원히 지연될 수도 있다는 뜻이다. 이러한 공정하지 않은(non-fair) 상황에서는 많은 속성들을 증명할 수 없게 된다. 이 문제를 다루기 위해, 우리는 이후 섹션 5에서 공정성(fairness) 규칙을 명시해야 한다.
+
+또한, 어떤 프로세스가 종료되었음에도 여전히 그 프로세스로 메시지를 보내는 것을 막는 규칙이 없기 때문에, 그런 메시지를 결국 제거하기 위한 규칙들(= missing-rules)이 필요하다. $`missing_{node}`$ 규칙은 이와 같은 메시지를 제거하는 역할 외에도, 다음과 같은 노드 컨트롤러 응답 메시지를 보내는 역할도 수행한다: link-reply (noproc), spawn-reply (a useless pid). 이 응답 메시지들은 ncEffect() 함수를 이용해 생성되며, 이 함수는 섹션 4에서 정의된다.
+
+exit-rule은 프로세스가 외부 요인에 의해 비정상적으로 종료되는 경우를 처리한다. 종료 사유는 링크된 프로세스의 종료이거나 명시적인 exit() 호출일 수 있다. 수신 프로세스는 종료되며, 이 사실은 결국 노드 컨트롤러에게 통지된다. 이 메시지 전달 메커니즘은 완전히 비동기적(asynchronous) 이다. 자기 자신에게 보내는 메시지조차도 시스템 메시지 큐를 통해 전달된다. 마지막으로, 노드 컨트롤러에게 보내는 메시지는 Table 7에서 다룬다.
+
+
+
+**노드 컨트롤러 (메타)규칙** 
+표 7에는 노드 컨트롤러를 위한 메타 규칙들이 포함되어 있다.
+이 규칙들은 노드 컨트롤러 신호가 어떻게 처리되는지를 설명한다.
+
+<img width="869" height="247" alt="image" src="https://github.com/user-attachments/assets/adcc43fc-3ca9-4ce4-9ee6-9220c5bb8487" />
+<br>
+<br>
+
+두 가지 경우가 있다.
+일반적인 경우(nc-규칙)에서는 신호가 최종 목적지에 도달했으며, 이 노드 컨트롤러에서 처리되기만 하면 된다.
+두 번째 경우(nc_forward-규칙)에서는 원격 pid를 포함하는 신호를 송신 측에서 처리하는 경우이다.
+즉, 신호는 로컬 작업을 수행한 뒤 전달되어야 한다.
+이러한 작업들과 응답을 명세하는 것이 이 규칙들의 핵심이다.
+작업들(즉, 함수 ncEffect의 정의)은 4절에서 제시된다.
+
+로컬 신호와 원격 신호를 구분하기 위해 함수 destNid()가 사용되며, 이는 표 8에 정의되어 있다.
+
+노드 컨트롤러는 별도의 메시지 큐를 갖지 않는다는 점에 유의해야 한다.
+노드 컨트롤러에 전송된 신호는 도착 즉시 소비된다.
+따라서 노드 컨트롤러에는 선택적 수신(selective receive)이 존재하지 않는다.
+
+nc-규칙과 ncforward-규칙은 전이(transition)에 하나 이상의 동작이 붙을 수 있다는 점에서 특별하다.
+즉, 입력 동작과 출력 동작(들)을 모두 가질 수 있다.
+하나의 전이에 대해 여러 동작이 존재할 수 있다는 해석은 단순하다.
+이러한 동작들은 순차적으로 수행되며, 이는 마치 하나의 동작을 가진 여러 개의 연속적인 전이들이 있는 것과 같다.
+함수 mkAction()은 메시지 시퀀스로부터 여러 동작을 생성하는 데 사용된다.
