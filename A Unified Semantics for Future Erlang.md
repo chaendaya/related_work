@@ -388,14 +388,15 @@ read 규칙에서는, 프로세스의 메일박스(큐)가 $` q1 \cdot v \cdot q
 **Side effect를 일으키는 (노드 컨트롤러 관련) 표현식 평가** 
 
 Table 2는 사이드 이펙트를 발생시키는 동작들에 대한 규칙을 포함한다. 이러한 동작들 중 다수는 노드 컨트롤러의 개입이 필요하다. side eff 규칙은 일반적인(generic) 형태의 규칙으로서 다음과 같은 액션들을 포함한다: send, exit, link, unlink, monitor, unmonitor, spawn, register, whereis, monitor_node, unmonitor_node.
-이 테이블의 모든 규칙은 **비동기적(asynchronous)** 이다. 예를 들어 whereis()는 즉시 ok 응답을 반환하지만, "진짜" 결과(예: whereis나 unlink의 경우)는 **나중에 일반 수신 가능한 신호(signal)** 로 도착한다. 이러한 연산들의 비동기적 성격 때문에, 그 의미론 규칙들은 겉보기에는 단순하게 보인다. Table 7에서는 이러한 규칙들에 대해 노드 컨트롤러 측에서 처리되는 부분을 제시하고 있으며, 섹션 5에서는 노드 컨트롤러의 더 복잡한 내부 작동 방식을 설명한다. 
+이 테이블의 모든 규칙은 **비동기적(asynchronous)** 이다. 예를 들어 whereis()는 즉시 ok 응답을 반환하지만, "진짜" 결과(예: whereis나 unlink의 경우)는 **나중에 일반 수신 가능한 신호(signal)** 로 도착한다. 이러한 연산들의 비동기적 성격 때문에, 그 의미론 규칙들은 겉보기에는 단순하게 보인다. Table 7에서는 이러한 규칙들에 대해 노드 컨트롤러 측에서 처리되는 부분을 제시하고 있으며, 섹션 4에서는 노드 컨트롤러의 더 복잡한 내부 작동 방식을 설명한다. 
 
 <img width="888" height="253" alt="image" src="https://github.com/user-attachments/assets/bda023bf-f150-4acd-b6ae-b839427fdd9a" />
+<img width="268" height="95" alt="image" src="https://github.com/user-attachments/assets/dfb1a7a9-5a67-4835-bdd0-fa2c51d67a38" />
+
 <br>
 <br>
 side eff 규칙은 적절한 signal을 구성하기 위해 변환 함수 mkSig를 사용하는데, 이 함수는 Table 3에 정의되어 있다.
 <img width="469" height="206" alt="image" src="https://github.com/user-attachments/assets/c524e392-9498-4581-ba9f-1d10835c27ba" />
-
 <br>
 <br>
 <br>
@@ -457,3 +458,26 @@ nc-규칙과 ncforward-규칙은 전이(transition)에 하나 이상의 동작�
 하나의 전이에 대해 여러 동작이 존재할 수 있다는 해석은 단순하다.
 이러한 동작들은 순차적으로 수행되며, 이는 마치 하나의 동작을 가진 여러 개의 연속적인 전이들이 있는 것과 같다.
 함수 mkAction()은 메시지 시퀀스로부터 여러 동작을 생성하는 데 사용된다.
+
+<br>
+<br>
+
+**노드 장애 규칙**
+
+표 9는 노드가 실패하는 경우의 규칙들을 담고 있다. 이 규칙들은 단일 노드의 크래시 상황이든, 두 노드 간 연결이 끊기는 상황이든 모두를 포함한다.
+이 두 경우 모두에서 노드 컨트롤러가 통지를 받는다.
+또한 이곳에서도 대부분의 작업을 노드 컨트롤러로 위임함으로써 복잡한 의미론 규칙을 피할 수 있음을 볼 수 있다.
+예를 들어, 분산 Erlang의 의미론에서 해당 상황을 처리하는 규칙들은 한 페이지의 대부분을 차지한다.
+그럼에도 불구하고 복잡성이 완전히 사라지지는 않는다.
+우리는 여전히 노드 컨트롤러 내부에서 일정한 bookkeeping (상태 추적 작업) 을 수행해야 한다.
+
+<img width="954" height="197" alt="image" src="https://github.com/user-attachments/assets/aec6190e-5e73-4b06-a4b3-3be48ec69998" />
+<br>
+<br>
+
+
+<br>
+<br>
+
+
+## 4. 노드 컨트롤러
